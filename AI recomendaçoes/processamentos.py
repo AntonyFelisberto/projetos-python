@@ -17,7 +17,7 @@ def get_similares(base,dado_base):
                     for outro in base if outro != dado_base]
     similaridade.sort()
     similaridade.reverse()
-    return similaridade[0:30]
+    return similaridade
 
 def get_recomendacoes(base,dado_base):
     totais = {}
@@ -37,7 +37,7 @@ def get_recomendacoes(base,dado_base):
     rankings=[(total / soma_similaridades[item],item) for item,total in totais.items()]
     rankings.sort()
     rankings.reverse()
-    return rankings[0:30]
+    return rankings
 
 def calcula_items_similares(base):
     result = {}
@@ -45,3 +45,19 @@ def calcula_items_similares(base):
         notas = get_similares(base,item)
         result[item] = notas
     return result
+
+def get_recomendacao_itens(base_usuario, similaridades_itens, usuario):
+    nota_usuario = base_usuario[usuario]
+    notas = {}
+    total_similaridades = {}
+    for (item,nota) in nota_usuario.items():
+        for (similaridade,item_dois) in similaridades_itens[item]:
+            if item_dois in nota_usuario: continue
+            notas.setdefault(item_dois,0)
+            notas[item_dois]+= similaridade * nota
+            total_similaridades.setdefault(item_dois,0)
+            total_similaridades[item_dois]+=similaridade
+    rankings=[(score/total_similaridades[item],item) for item,score in notas.items()]
+    rankings.sort()
+    rankings.reverse()
+    return rankings
