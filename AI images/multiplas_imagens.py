@@ -24,4 +24,4 @@ num_imgs = 3
 prompt = 'HORSE AGAINST SERPENT'
 imgs = pipe(prompt,num_images_per_prompt=num_imgs).images
 grid = grid_img(imgs,rows=1,cols=3,scale=0.75)
-grid.save("testes.png")
+grid.save("image.png")
